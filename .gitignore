@@ -1,3 +1,11 @@
+cache/
+*cache/
+.vscode/
+events.out.tfevents.*
+
+*.nii.gz
+*.nii
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,0 +1,51 @@
+# configuration common to all models for training, validation and inference
+
+# rand_prob: 0.5  # note used
+num_epochs: 1000
+num_substeps: 1
+validation_batch_size: 1
+
+##########################
+# IMPORT STATEMENTS
+##########################
+imports:
+  - $import os
+  - $import datetime
+  - $import torcht
+  - $import glob
+  - $import ace_dliris
+  - $import tensorboardX
+  - $import matplotlib
+
+
+##########################
+# PATH DEFINITIONS
+##########################
+bundle_root: '.'
+runs_dir: '$os.path.join(@bundle_root, "runs")'
+output_dir: '$os.path.join(@runs_dir, @model_name)'
+
+
+##########################
+# CONSTANTS
+##########################
+image: $monai.utils.CommonKeys.IMAGE
+label: $monai.utils.CommonKeys.LABEL
+pred: $monai.utils.CommonKeys.PRED
+both_keys: ['@image', '@label']
+ckpt_interval: 1
+val_interval: 10
+
+
+##########################
+# NETWORK DEFINITION
+##########################
+network_def:
+  _target_: UNet
+  spatial_dims: 3
+  in_channels: '@num_channels'
+  out_channels: '@num_classes'
+  channels: [8, 16, 32, 64]
+  strides: [2, 2, 2]
+  num_res_units: 2
+network: $@network_def.to(@device)

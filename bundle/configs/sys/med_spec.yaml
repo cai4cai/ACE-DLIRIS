@@ -1,0 +1,13 @@
+# Config file suitable for running on medium spec machine
+
+# Designed for:
+  # NVIDIA GeForce GTX 1080Ti - 11GB
+  # 6 CPU cores (threads)
+  # 32GB RAM
+
+num_workers: 2
+val_num_workers: 1
+batch_size: 2
+num_iter: 8
+
+device: $torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')

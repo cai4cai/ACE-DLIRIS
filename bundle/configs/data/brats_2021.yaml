@@ -1,0 +1,113 @@
+num_channels: 4
+num_classes: 4
+
+class_names: $['Background (BG)', 'Enhancing Tumour (ET)', 'Tumour Core (TC)', 'Whole Tumour (WT)']
+
+##########################
+# DATASET SETUP
+##########################
+dataset_dir: '../data/BraTS2021_TrainingValidationData'
+imgs: "$sorted(glob.glob(@dataset_dir+'/BraTS2021_*/BraTS2021_*_t1.nii.gz'))"
+all_imgs: '$[{"t1": i, "t1ce": i.replace("t1","t1ce"), "t2": i.replace("t1","t2"), "flair": i.replace("t1","flair"), "label": i.replace("t1","seg_c")} for i in @imgs]'
+partitions: '$monai.data.partition_dataset(@all_imgs, (19, 1), shuffle=True, seed=0)'
+train_sub: '$@partitions[0]'
+val_sub: '$@partitions[1]'
+
+testing_dataset_dir: '../data/BraTS2021_TestingData'
+testing_imgs: "$sorted(glob.glob(@testing_dataset_dir+'/BraTS2021_*/BraTS2021_*_t1.nii.gz'))"
+testing_all_imgs: '$[{"t1": i, "t1ce": i.replace("t1","t1ce"), "t2": i.replace("t1","t2"), "flair": i.replace("t1","flair"), "label": i.replace("t1","seg_c")} for i in @testing_imgs]'
+testing_sub: '$@testing_all_imgs'
+
+patch_size: [224, 224, 144]
+val_windows_size: [240, 240, 160]
+
+
+##########################
+# PRE-PROCESSING TRANSFORMATIONS
+##########################
+
+# Transforms taken from: https://github.com/LucasFidon/TRABIT_BraTS2021/blob/main/src/data/brats_transform_pipelines.py
+
+base_transforms:
+- _target_: LoadImaged
+  keys: ['t1','t1ce','t2','flair', 'label']
+  image_only: true
+- _target_: EnsureChannelFirstd
+  keys: ['t1','t1ce','t2','flair', 'label']
+- _target_: EnsureTyped
+  keys: ['t1','t1ce','t2','flair', 'label']
+- _target_: ConcatItemsd
+  keys: ['t1','t1ce','t2','flair']
+  name: '@image'
+- _target_: Orientationd
+  keys: '@both_keys'
+  axcodes: RAS
+- _target_: Spacingd
+  keys: '@both_keys'
+  pixdim: [1.0, 1.0, 1.0]
+
+train_transforms:
+- _target_: RandZoomd
+  keys: '@both_keys'
+  min_zoom: 0.7
+  max_zoom: 1.5
+  mode: ['trilinear', 'nearest']
+  align_corners: [True, $None]
+  prob: 0.3
+- _target_: RandRotated
+  keys: '@both_keys'
+  range_x: [-0.261799, 0.261799]
+  range_y: [-0.261799, 0.261799]
+  range_z: [-0.261799, 0.261799]
+  mode: ['bilinear', 'nearest']
+  align_corners: [True, $None]
+  padding_mode: ['border', 'border']
+  prob: 0.3
+- _target_: RandGaussianNoised
+  keys: '@image'
+  mean: 0.0
+  std: 0.1
+  prob: 0.2
+- _target_: RandGaussianSmoothd
+  keys: '@image'
+  sigma_x: [0.5, 1.15]
+  sigma_y: [0.5, 1.15]
+  sigma_z: [0.5, 1.15]
+  prob: 0.2
+- _target_: RandAdjustContrastd
+  keys: '@image'
+  gamma: [0.7, 1.5]
+  prob: 0.3
+- _target_: RandFlipd
+  keys: '@both_keys'
+  spatial_axis: [0]
+  prob: 0.5
+- _target_: RandSpatialCropd
+  keys: '@both_keys'
+  roi_size: '@patch_size'
+- _target_: NormalizeIntensityd
+  keys: '@image'
+  nonzero: True
+  channel_wise: True
+
+
+val_transforms:
+  - _target_: NormalizeIntensityd
+    keys: '@image'
+    nonzero: True
+    channel_wise: True
+
+
+##########################
+# POST-PROCESSING AND INFERENCE
+##########################
+val_postprocessing:
+  _target_: Compose
+  transforms:
+  - _target_: Activationsd  # softmax prediction
+    keys: '@pred'
+    softmax: true
+  - _target_: ace_dliris.brats_transforms.ConvertToBratsClassesd  # labelmap to discrete "one-hot" brats classes
+    keys: '@label'
+  - _target_: ace_dliris.brats_transforms.ConvertToBratsClassesSoftmaxd  # softmax predicion to combined softmax brats classes
+    keys: '@pred'

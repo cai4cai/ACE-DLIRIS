@@ -1,0 +1,26 @@
+##########################
+# LOSS FUNCTION
+##########################
+lossfn:
+  _target_: ace_dliris.losses.HardL1ACEandCELoss
+  ace_weight: 0.5
+  ce_weight: 0.5
+  to_onehot_y: true
+  ace_params:
+    num_bins: 20
+    include_background: true
+    softmax: true
+    reduction: 'mean'
+  ce_params:
+    reduction: 'mean'
+
+
+##########################
+# OPTIMIZER
+##########################
+learning_rate: 0.001
+
+optimizer:
+  _target_: torch.optim.Adam
+  params: $@network.parameters()
+  lr: '@learning_rate'

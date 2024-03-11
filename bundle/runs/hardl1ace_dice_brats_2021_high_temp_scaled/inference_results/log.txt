@@ -1,0 +1,5 @@
+2024-02-14 19:36:56,586 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/hardl1ace_dice_brats_2021_high_temp_scaled/model_epoch=1.pt
+2024-02-14 19:38:16,038 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/hardl1ace_dice_brats_2021_high_temp_scaled/model_epoch=1.pt
+2024-02-14 19:38:44,497 ignite.engine.engine.SupervisedEvaluator ERROR: Engine run is terminating due to exception:
+2024-02-14 19:57:20,040 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.8657998442649841
+2024-02-14 19:57:20,050 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:20:23.453

@@ -1,0 +1,103 @@
+# configuration common to all training runs
+
+##########################
+# DATASETS
+##########################
+train_dataset:
+  _target_: SmartCacheDataset
+  data: '@train_sub'
+  transform:
+    _target_: Compose
+    transforms: $@base_transforms + @train_transforms
+  cache_num: $@batch_size * @num_iter
+  num_init_workers: '@num_workers'
+  num_replace_workers: '@num_workers'
+  as_contiguous: true
+
+
+##########################
+# DATALOADERS
+##########################
+train_dataloader:
+  _target_: ThreadDataLoader  # generate data ansynchronously from training
+  dataset: '@train_dataset'
+  batch_size: '@batch_size'
+  repeats: '@num_substeps'
+  num_workers: '@num_workers'
+
+
+##########################
+# TRAINER CONFIGURATION
+##########################
+training_handlers:
+- _target_: SmartCacheHandler
+  smartcacher: '@train_dataset'
+- '@metriclogger'
+- _target_: ValidationHandler  # run validation at the set interval, bridge between trainer and evaluator objects
+  validator: '@evaluator'
+  epoch_level: true
+  interval: '@val_interval'
+- _target_: StatsHandler
+  name: null  # use engine.logger as the Logger object to log to
+  tag_name: train_loss
+  output_transform: $monai.handlers.from_engine(['loss'], first=True)  # log loss value
+- _target_: LogfileHandler  # log outputs from the training engine
+  output_dir: '@output_dir'
+- _target_: TensorBoardStatsHandler
+  summary_writer: '@writer'
+  tag_name: train
+  output_transform: $monai.handlers.from_engine(['loss'], first=True)
+
+trainer:
+  _target_: SupervisedTrainer
+  max_epochs: '@num_epochs'
+  device: '@device'
+  train_data_loader: '@train_dataloader'
+  network: '@network'
+  loss_function: '@lossfn'
+  optimizer: '@optimizer'
+  key_train_metric: null
+  train_handlers: '@training_handlers'
+
+
+##########################
+# CHECKPOINTING
+##########################
+# Get latest checkpoint, if it exists:
+ckpt_path: '$max(glob.glob(os.path.join(@output_dir, "ckpt_checkpoint_epoch=*.pt")), key=lambda f: int(os.path.basename(f).split("=")[1].split(".")[0]), default="none")'
+
+# Create a checkpoint loader and saver to load and save checkpoints in case the job in interrupted
+# and will be restarted by cluster job manager, therefore we want to resume from the last epoch
+checkpoint_loader:
+  _target_: CheckpointLoader
+  _disabled_: $not os.path.exists(@ckpt_path)
+  load_path: '@ckpt_path'
+  load_dict:
+    model: '@network'
+    optimizer: '@optimizer'
+    logger: '@metriclogger'
+    validator: '@evaluator'
+    trainer: '@trainer'
+
+checkpoint_saver:
+  _target_: CheckpointSaver
+  save_dir: '@output_dir'
+  save_dict:
+    model: '@network'
+    optimizer: '@optimizer'
+    logger: '@metriclogger'
+    validator: '@evaluator'
+    trainer: '@trainer'
+  file_prefix: 'ckpt'
+  save_interval: '@ckpt_interval'
+  save_final: false
+  epoch_level: true
+  n_saved: 1
+
+##########################
+# RUN CONFIGURATION
+##########################
+run:
+- $@checkpoint_loader.attach(@trainer) if @checkpoint_loader is not None else None
+- $@checkpoint_saver.attach(@trainer)
+- $@trainer.run()

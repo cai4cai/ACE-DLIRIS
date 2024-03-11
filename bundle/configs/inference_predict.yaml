@@ -1,0 +1,94 @@
+##########################
+# PATH DEFINITIONS
+##########################
+inference_dir: '$os.path.join(@output_dir, "inference_results")'
+# Get checkpoint with highest validation metric:
+ckpt_path: '$max(glob.glob(os.path.join(@output_dir, "model_key_metric=*.pt")), key=lambda f: float(os.path.basename(f).split("=")[1].rstrip(".pt")), default="none")'
+
+
+##########################
+# TESTING DATASET
+##########################
+
+testing_dataset:
+  _target_: PersistentDataset
+  data: '@testing_sub'
+  transform:
+    _target_: Compose
+    transforms: $@base_transforms + @val_transforms
+  cache_dir: $@bundle_root + '/testing_cache'
+
+
+testing_dataloader:
+  _target_: DataLoader
+  dataset: '@testing_dataset'
+  batch_size: '@validation_batch_size'
+  num_workers: '@val_num_workers'
+
+
+inferer:
+  _target_: SlidingWindowInferer
+  roi_size: '@val_windows_size'
+  sw_batch_size: '@validation_batch_size'
+  mode: 'gaussian'
+
+
+##########################
+# POST-PROCESSING AND SAVING RESULTS
+##########################
+postprocessing:
+  _target_: Compose
+  transforms:
+  - _target_: Activationsd  # softmax prediction
+    keys: '@pred'
+    softmax: true
+  - _target_: Orientationd  # Put back into original BraTS orientation
+    keys: '@pred'
+    axcodes: LPS
+  - _target_: SaveImaged  # Save the segmentation probability map
+    keys: '@pred'
+    meta_keys: 'pred_meta_dict'
+    output_dir: '@inference_dir'
+    output_postfix: 'prob'
+    output_ext: '.nii.gz'
+  - _target_: AsDiscreted  # Convert softmax to discrete values
+    keys: '@pred'
+    argmax: true
+  - _target_: SaveImaged  # Save the segmentation results
+    keys: '@pred'
+    meta_keys: 'pred_meta_dict'
+    output_dir: '@inference_dir'
+    output_postfix: 'seg'
+    output_ext: '.nii.gz'
+
+
+##########################
+# INFERENCE HANDLERS
+##########################
+handlers:
+- _target_: LogfileHandler  # log outputs from the validation engine
+  output_dir: '@inference_dir'
+- _target_: CheckpointLoader
+  load_path: '@ckpt_path'
+  load_dict:
+    model: '@network'
+
+
+##########################
+# INFERENCE EVALUATOR
+##########################
+evaluator:
+  _target_: SupervisedEvaluator
+  device: '@device'
+  val_data_loader: '@testing_dataloader'
+  network: '@network'
+  inferer: '@inferer'
+  postprocessing: '@postprocessing'
+  val_handlers: '@handlers'
+
+
+##########################
+# RUN INFERENCE
+##########################
+run:
+- $@evaluator.run()

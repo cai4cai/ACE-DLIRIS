@@ -1,0 +1,13 @@
+# Config file suitable for running on medium spec machine
+
+# Designed for:
+  # NVIDIA GeForce GTX 1650 Ti Max-Q - 6GB
+  # 4 CPU cores (threads)
+  # 16GB RAM
+
+num_workers: 2
+val_num_workers: 1
+batch_size: 2
+num_iter: 4
+
+device: $torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')

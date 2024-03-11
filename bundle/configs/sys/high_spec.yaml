@@ -1,0 +1,13 @@
+# Config file suitable for running on high spec machine
+
+# Designed for:
+  # NVIDIA Tesla V100 GPU - 32GB
+  # 32 CPU cores (threads)
+  # 128GB RAM
+
+num_workers: 8
+val_num_workers: 1
+batch_size: 8
+num_iter: 16
+
+device: $torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')

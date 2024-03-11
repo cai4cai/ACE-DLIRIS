@@ -1,0 +1,7 @@
+2024-02-14 19:20:27,593 ignite.engine.engine.SupervisedEvaluator ERROR: Engine run is terminating due to exception: [Errno 2] No such file or directory: 'os.path.join(@output_dir, "model_epoch=1.pt")'
+2024-02-14 19:30:12,110 ignite.engine.engine.SupervisedEvaluator ERROR: Engine run is terminating due to exception: [Errno 2] No such file or directory: 'os.path.join(@output_dir, "model_epoch=1.pt")'
+2024-02-14 19:32:04,165 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high_temp_scaled/model_epoch=1.pt
+2024-02-14 19:34:42,481 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high_temp_scaled/model_epoch=1.pt
+2024-02-14 19:53:59,776 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.8624297976493835
+2024-02-14 19:53:59,787 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:19:17.294
+2024-03-11 16:50:17,262 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high_temp_scaled/model_epoch=1.pt

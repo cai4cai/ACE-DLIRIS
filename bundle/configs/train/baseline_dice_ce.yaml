@@ -1,0 +1,19 @@
+##########################
+# LOSS FUNCTION
+##########################
+lossfn:
+  _target_: DiceCELoss
+  include_background: true
+  to_onehot_y: true
+  softmax: true
+
+
+##########################
+# OPTIMIZER
+##########################
+learning_rate: 0.001
+
+optimizer:
+  _target_: torch.optim.Adam
+  params: $@network.parameters()
+  lr: '@learning_rate'

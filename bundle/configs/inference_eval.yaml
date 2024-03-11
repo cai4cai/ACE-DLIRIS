@@ -1,0 +1,152 @@
+##########################
+# PATH DEFINITIONS
+##########################
+inference_dir: '$os.path.join(@output_dir, "inference_results")'
+# Get checkpoint with highest validation metric:
+ckpt_path: '$max(glob.glob(os.path.join(@output_dir, "model_key_metric=*.pt")), key=lambda f: float(os.path.basename(f).split("=")[1].rstrip(".pt")), default="none")'
+
+
+##########################
+# TESTING DATASET
+##########################
+
+testing_dataset:
+  _target_: PersistentDataset
+  data: '@testing_sub'
+  transform:
+    _target_: Compose
+    transforms: $@base_transforms + @val_transforms
+  cache_dir: $@bundle_root + '/testing_cache'
+
+
+testing_dataloader:
+  _target_: DataLoader
+  dataset: '@testing_dataset'
+  batch_size: '@validation_batch_size'
+  num_workers: '@val_num_workers'
+
+#########################
+# INFERENCE METRICS
+##########################
+
+num_bins: 20
+
+key_metric:
+  mean_dice:
+    _target_: MeanDice
+    include_background: false
+    output_transform:
+      _target_: ace_dliris.utils.discrete_from_engine
+      keys: ['@pred', '@label']
+      threshold: 0.5
+
+metrics:
+  ece:
+    _target_: ace_dliris.handlers.CalibrationError
+    num_bins: '@num_bins'
+    include_background: False
+    calibration_reduction: 'expected'
+    metric_reduction: 'mean'
+    output_transform: $monai.handlers.from_engine([@pred, @label])  # requires class probabilities for prediciton
+  ace:
+    _target_: ace_dliris.handlers.CalibrationError
+    num_bins: '@num_bins'
+    include_background: False
+    calibration_reduction: 'average'
+    metric_reduction: 'mean'
+    output_transform: $monai.handlers.from_engine([@pred, @label])
+  mce:
+    _target_: ace_dliris.handlers.CalibrationError
+    num_bins: '@num_bins'
+    include_background: False
+    calibration_reduction: 'maximum'
+    metric_reduction: 'mean'
+    output_transform: $monai.handlers.from_engine([@pred, @label])
+  reliability_diagram:
+    _target_: ace_dliris.handlers.ReliabilityDiagramHandler
+    num_classes: '@num_classes'
+    num_bins: '@num_bins'
+    include_background: False
+    output_dir: '$os.path.join(@inference_dir, "reliability_diagrams")'
+    figsize: [4.8, 3.6]  # Updated to match LNCS format
+    class_names: '@class_names'
+    draw_case_diagrams: True
+    draw_case_histograms: True
+    case_name_transform: $ace_dliris.utils.meta_data_image_transform
+    print_case_ece: True
+    print_case_ace: True
+    print_case_mce: True
+    draw_dataset_diagrams: True
+    draw_dataset_histograms: False
+    dataset_imshow_kwargs:
+      cmap: 'YlOrRd'
+      norm: $matplotlib.colors.PowerNorm(gamma=0.35)
+    savefig_kwargs:  # Merged case and dataset savefig_kwargs
+      format: 'pdf'
+      dpi: 100
+      transparent: False
+      bbox_inches: 'tight'
+    rc_params:  # Added rc_params to match set_plot_style
+      text.usetex: True
+      font.family: 'serif'
+      font.serif: ['Times']
+      font.size: 10
+      axes.labelsize: 10
+      axes.titlesize: 10
+      xtick.labelsize: 10
+      ytick.labelsize: 10
+      legend.fontsize: 10
+      figure.figsize: [4.8, 3.6]
+    output_transform: $monai.handlers.from_engine([@pred, @label])
+    save_details: False
+
+
+
+##########################
+# INFERENCE HANDLERS
+##########################
+handlers:
+- _target_: LogfileHandler  # log outputs from the validation engine
+  output_dir: '@inference_dir'
+- _target_: CheckpointLoader
+  load_path: '@ckpt_path'
+  load_dict:
+    model: '@network'
+- _target_: MetricsSaver
+  save_dir: '@inference_dir'
+  metrics: '$["mean_dice", "ece", "ace", "mce"]'
+  metric_details: '$["mean_dice", "ece", "ace", "mce"]'
+  batch_transform: $ace_dliris.utils.meta_data_batch_transform
+  summary_ops: '*'
+
+
+##########################
+# INFERENCE EVALUATOR
+##########################
+
+inferer:
+  _target_: SlidingWindowInferer
+  roi_size: '@val_windows_size'
+  sw_batch_size: '@validation_batch_size'
+  mode: 'gaussian'
+
+evaluator:
+  _target_: SupervisedEvaluator
+  device: '@device'
+  val_data_loader: '@testing_dataloader'
+  network: '@network'
+  inferer: '@inferer'
+  postprocessing: '@val_postprocessing'
+  key_val_metric: '@key_metric'
+  additional_metrics: '@metrics'
+  val_handlers: '@handlers'
+
+metriclogger:
+  _target_: MetricLogger
+  evaluator: '@evaluator'
+
+##########################
+# RUN INFERENCE
+##########################
+run:
+- $@evaluator.run()

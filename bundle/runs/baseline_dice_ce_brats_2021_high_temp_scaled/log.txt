@@ -1,0 +1,16 @@
+2024-02-14 17:53:14,593 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 1/14 -- train_loss: 0.0087
+2024-02-14 17:53:15,966 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 2/14 -- train_loss: 0.0073
+2024-02-14 17:53:17,375 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 3/14 -- train_loss: 0.0078
+2024-02-14 17:53:18,862 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 4/14 -- train_loss: 0.0053
+2024-02-14 17:53:20,157 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 5/14 -- train_loss: 0.0068
+2024-02-14 17:53:21,540 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 6/14 -- train_loss: 0.0557
+2024-02-14 17:53:22,839 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 7/14 -- train_loss: 0.0109
+2024-02-14 17:53:24,275 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 8/14 -- train_loss: 0.0129
+2024-02-14 17:53:25,509 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 9/14 -- train_loss: 0.0036
+2024-02-14 17:53:26,734 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 10/14 -- train_loss: 0.0130
+2024-02-14 17:53:27,959 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 11/14 -- train_loss: 0.0140
+2024-02-14 17:53:29,188 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 12/14 -- train_loss: 0.0079
+2024-02-14 17:53:30,418 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 13/14 -- train_loss: 0.0046
+2024-02-14 17:53:30,961 ignite.engine.engine.SupervisedTrainer INFO: Epoch: 1/1, Iter: 14/14 -- train_loss: 0.0108
+2024-02-14 17:53:30,970 ignite.engine.engine.SupervisedTrainer INFO: Saved checkpoint at epoch: 1
+2024-02-14 17:53:30,970 ignite.engine.engine.SupervisedTrainer INFO: Epoch[1] Complete. Time taken: 00:00:19.899

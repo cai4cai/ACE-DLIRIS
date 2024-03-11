@@ -1,0 +1,109 @@
+##########################
+# DATASETS
+##########################
+val_dataset:
+  _target_: PersistentDataset
+  data: '@val_sub'
+  transform:
+    _target_: Compose
+    transforms: $@base_transforms + @val_transforms
+  cache_dir: $@bundle_root + '/val_cache'
+
+
+val_dataloader:
+  _target_: DataLoader
+  dataset: '@val_dataset'
+  batch_size: '@validation_batch_size'
+  num_workers: '@val_num_workers'
+
+
+##########################
+# VALIDATION METRICS
+##########################
+key_val_metric:
+  val_mean_dice:
+    _target_: MeanDice
+    include_background: false
+    output_transform:
+      _target_: ace_dliris.utils.discrete_from_engine
+      keys: ['@pred', '@label']
+      threshold: 0.5   # -- DOES THIS THRESHOLD MAKE SENSE?
+
+additional_val_metrics:
+  val_ece:
+    _target_: ace_dliris.handlers.CalibrationError
+    num_bins: 20
+    include_background: False
+    calibration_reduction: 'expected'
+    metric_reduction: 'mean'
+    output_transform: $monai.handlers.from_engine([@pred, @label])  # requires class probabilities for prediciton
+  val_ace:
+    _target_: ace_dliris.handlers.CalibrationError
+    num_bins: 20
+    include_background: False
+    calibration_reduction: 'average'
+    metric_reduction: 'mean'
+    output_transform: $monai.handlers.from_engine([@pred, @label])
+  val_mce:
+    _target_: ace_dliris.handlers.CalibrationError
+    num_bins: 20
+    include_background: False
+    calibration_reduction: 'maximum'
+    metric_reduction: 'mean'
+    output_transform: $monai.handlers.from_engine([@pred, @label])
+
+writer:
+  _target_: tensorboardX.SummaryWriter
+  log_dir: '@output_dir'
+
+
+##########################
+# EVALUATOR
+##########################
+
+inferer:
+  _target_: SlidingWindowInferer
+  roi_size: '@val_windows_size'
+  sw_batch_size: '@validation_batch_size'
+  mode: 'gaussian'
+
+val_handlers:
+- _target_: StatsHandler
+  name: null  # use engine.logger as the Logger object to log to
+  output_transform: '$lambda x: None'
+- _target_: LogfileHandler  # log outputs from the validation engine
+  output_dir: '@output_dir'
+- _target_: TensorBoardStatsHandler
+  summary_writer: '@writer'
+  tag_name: val
+  output_transform: '$lambda x: None'
+- _target_: MetricsSaver
+  save_dir: '@output_dir'
+  metrics: '*'
+  metric_details: '*'
+  summary_ops: '*'
+- _target_: CheckpointSaver
+  save_dir: '@output_dir'
+  save_dict:
+    model: '@network'
+  save_interval: 0  # don't save iterations, just when the metric improves
+  save_final: true
+  epoch_level: false
+  save_key_metric: true
+  key_metric_name: val_mean_dice  # save the checkpoint when this value improves
+  key_metric_n_saved: 1
+
+evaluator:
+  _target_: SupervisedEvaluator
+  device: '@device'
+  val_data_loader: '@val_dataloader'
+  network: '@network'
+  inferer: '@inferer'
+  postprocessing: '@val_postprocessing'
+  key_val_metric: '@key_val_metric'
+  additional_metrics: '@additional_val_metrics'
+  val_handlers: '@val_handlers'
+
+metriclogger:
+  _target_: MetricLogger
+  evaluator: '@evaluator'

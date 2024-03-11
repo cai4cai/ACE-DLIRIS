@@ -1,0 +1,3 @@
+2024-02-14 19:36:30,258 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/hardl1ace_ce_brats_2021_high_temp_scaled/model_epoch=1.pt
+2024-02-14 19:57:03,718 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.8419895172119141
+2024-02-14 19:57:03,727 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:20:33.459

@@ -1,0 +1,9 @@
+2024-01-29 16:37:45,145 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_dice_brats_2021_high/model_key_metric=0.8895.pt
+2024-01-29 16:48:58,393 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.867871880531311
+2024-01-29 16:48:58,402 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:11:13.245
+2024-02-13 13:53:45,204 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_dice_brats_2021_high/model_key_metric=0.8895.pt
+2024-02-13 14:07:08,407 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.867871880531311
+2024-02-13 14:07:08,427 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:13:23.213
+2024-02-13 14:34:39,785 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_dice_brats_2021_high/model_key_metric=0.8895.pt
+2024-02-13 14:48:50,065 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.867871880531311
+2024-02-13 14:48:50,078 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:14:10.283

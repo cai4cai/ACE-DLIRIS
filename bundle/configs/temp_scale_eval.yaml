@@ -1,0 +1,20 @@
+# Could just pass this as a CLI
+ckpt_path: '$os.path.join(@output_dir, "model_epoch=1.pt")'
+
+model:
+  _target_: ace_dliris.utils.TemperatureScaling
+  network: '@network'
+
+##########################
+# INFERENCE EVALUATOR
+##########################
+evaluator:
+  _target_: SupervisedEvaluator
+  device: '@device'
+  val_data_loader: '@testing_dataloader'
+  network: '@model'
+  inferer: '@inferer'
+  postprocessing: '@val_postprocessing'
+  key_val_metric: '@key_metric'
+  additional_metrics: '@metrics'
+  val_handlers: '@handlers'

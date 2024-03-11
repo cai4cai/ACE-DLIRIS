@@ -1,0 +1,18 @@
+name: ace_dliris
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - monai==1.3.0
+  - pytorch::ignite
+  - nibabel
+  - anaconda::scikit-image
+  - tensorboardx
+  - pytest
+  - matplotlib
+  - seaborn
+  - tabulate
+  - pre-commit==3.6.0
+  - black==24.1.1
+  - flake8==7.0.0

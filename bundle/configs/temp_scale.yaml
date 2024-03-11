@@ -1,0 +1,113 @@
+num_epochs: 1  # only 1 epoch for temp scaling - 1 epoch = whole training dataset
+batch_size: 4  # reducing the batch size to run on local machine
+
+##########################
+# PATH DEFINITIONS
+##########################
+
+# Model directory is now the previous (prior to temp scaling) output directory
+model_dir: '$os.path.join(@runs_dir, @model_name)'
+
+# Get checkpoint with highest validation metric:
+ckpt_path: '$max(glob.glob(os.path.join(@model_dir, "model_key_metric=*.pt")), key=lambda f: float(os.path.basename(f).split("=")[1].rstrip(".pt")), default="none")'
+
+# Redfine output directory for temp scaled model and metrics and checkpoints
+output_dir: $@model_dir + '_temp_scaled'
+
+##########################
+# PRE-PROCESSING TRANSFORMATIONS
+##########################
+
+temp_scale_transforms:
+- _target_: SpatialPadd  # ideally this would be ResizeWithPadOrCropd, but it wasn't working
+  keys: '@both_keys'
+  spatial_size: '@val_windows_size'
+- _target_: NormalizeIntensityd
+  keys: '@image'
+  nonzero: True
+  channel_wise: True
+
+##########################
+# TEMP SCALING DATASET
+##########################
+
+dataset:
+  _target_: PersistentDataset
+  data: '@val_sub'
+  transform:
+    _target_: Compose
+    transforms: $@base_transforms + @temp_scale_transforms  # no need for train_transforms
+  cache_dir: $@bundle_root + '/val_cache'
+
+dataloader:
+  _target_: DataLoader
+  dataset: '@dataset'
+  batch_size: '@batch_size'
+  num_workers: '@num_workers'
+
+
+##########################
+# HANDLERS
+##########################
+
+handlers:
+- _target_: LogfileHandler  # log outputs from the validation engine
+  output_dir: '@output_dir'
+- _target_: StatsHandler
+  name: null  # use engine.logger as the Logger object to log to
+  tag_name: train_loss
+  output_transform: $monai.handlers.from_engine(['loss'], first=True)  # log loss value
+- _target_: CheckpointSaver
+  save_dir: '@output_dir'
+  save_dict:
+    model: '@network'
+  save_interval: 1
+  save_final: true
+
+
+##########################
+# TEMP SCALE MODEL
+##########################
+model:
+  _target_: ace_dliris.utils.TemperatureScaling
+  network: '@network'
+  network_ckpt_path: '@ckpt_path'
+
+
+##########################
+# OPTIMIZER AND LOSS FUNCTION
+##########################
+
+optimizer:
+  _target_: torch.optim.Adam
+  params: $@model.parameters()
+  lr: 0.001
+
+lossfn:
+  _target_: ace_dliris.losses.CrossEntropyLoss
+  to_onehot_y: true
+  ce_params:
+    reduction: 'mean'
+
+##########################
+# TRAINER CONFIGURATION
+##########################
+
+trainer:
+  _target_: SupervisedTrainer
+  max_epochs: '@num_epochs'
+  device: '@device'
+  train_data_loader: '@dataloader'
+  network: '@model'
+  loss_function: '@lossfn'
+  optimizer: '@optimizer'
+  key_train_metric: null
+  train_handlers: '@handlers'
+
+
+##########################  YOU NEED TO SAVE THE MODEL
+# RUN CONFIGURATION
+##########################
+
+run:
+- $@trainer.run()

@@ -1,0 +1,123 @@
+2024-01-29 16:20:12,759 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-01-29 16:28:23,787 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.8644485473632812
+2024-01-29 16:28:23,800 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:08:11.030
+2024-01-29 16:36:07,751 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-01-29 16:45:36,349 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.864448606967926
+2024-01-29 16:45:36,367 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:09:28.605
+2024-02-12 18:29:18,462 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-12 18:29:22,859 ignite.engine.engine.SupervisedEvaluator ERROR: Current run is terminating due to exception: latex was not able to process the following string:
+b'lp'
+
+Here is the full command invocation and its output:
+
+latex -interaction=nonstopmode --halt-on-error --output-directory=tmpywb3axwg 280592a6cb87d0a6f07f2be6c239ff4c.tex
+
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=latex)
+ restricted \write18 enabled.
+entering extended mode
+(./280592a6cb87d0a6f07f2be6c239ff4c.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/mathptmx.sty)
+
+! LaTeX Error: File `type1cm.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name:
+! Emergency stop.
+<read *>
+
+l.8 \usepackage
+               {type1ec}^^M
+No pages of output.
+Transcript written on tmpywb3axwg/280592a6cb87d0a6f07f2be6c239ff4c.log.
+
+
+
+2024-02-12 18:29:24,499 ignite.engine.engine.SupervisedEvaluator ERROR: Engine run is terminating due to exception: latex was not able to process the following string:
+b'lp'
+
+Here is the full command invocation and its output:
+
+latex -interaction=nonstopmode --halt-on-error --output-directory=tmpywb3axwg 280592a6cb87d0a6f07f2be6c239ff4c.tex
+
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=latex)
+ restricted \write18 enabled.
+entering extended mode
+(./280592a6cb87d0a6f07f2be6c239ff4c.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/mathptmx.sty)
+
+! LaTeX Error: File `type1cm.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name:
+! Emergency stop.
+<read *>
+
+l.8 \usepackage
+               {type1ec}^^M
+No pages of output.
+Transcript written on tmpywb3axwg/280592a6cb87d0a6f07f2be6c239ff4c.log.
+
+
+
+2024-02-12 18:39:39,070 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 12:31:51,534 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 12:34:35,857 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 12:41:22,179 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 12:44:01,000 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 12:44:40,749 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 12:45:58,621 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:04:25,504 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:06:29,810 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:08:22,734 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:08:51,179 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:09:29,769 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:10:48,709 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:11:15,459 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:11:47,030 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:13:58,767 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:17:12,295 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:18:10,289 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:18:13,074 ignite.engine.engine.SupervisedEvaluator ERROR: Current run is terminating due to exception: 'numpy.ndarray' object has no attribute 'set_aspect'
+2024-02-13 13:18:13,710 ignite.engine.engine.SupervisedEvaluator ERROR: Engine run is terminating due to exception: 'numpy.ndarray' object has no attribute 'set_aspect'
+2024-02-13 13:19:12,444 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:21:14,513 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:22:14,794 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:22:17,558 ignite.engine.engine.SupervisedEvaluator ERROR: Current run is terminating due to exception: _AxesBase.set_aspect() missing 1 required positional argument: 'aspect'
+2024-02-13 13:22:18,423 ignite.engine.engine.SupervisedEvaluator ERROR: Engine run is terminating due to exception: _AxesBase.set_aspect() missing 1 required positional argument: 'aspect'
+2024-02-13 13:22:45,309 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:23:17,370 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:24:05,068 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:24:29,273 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:26:06,300 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:28:01,743 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:30:08,209 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:30:50,576 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:31:15,869 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:36:53,845 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:37:47,447 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:39:00,622 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:39:31,040 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:39:55,672 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:40:15,723 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 13:52:46,533 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 14:06:05,778 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.8644485473632812
+2024-02-13 14:06:05,791 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:13:19.247
+2024-02-13 14:18:12,343 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 14:21:05,478 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 14:34:33,147 ignite.engine.engine.SupervisedEvaluator INFO: Restored all variables from ./bundle/runs/baseline_ce_brats_2021_high/model_key_metric=0.8814.pt
+2024-02-13 14:48:35,228 ignite.engine.engine.SupervisedEvaluator INFO: Got new best metric of mean_dice: 0.8644485473632812
+2024-02-13 14:48:35,240 ignite.engine.engine.SupervisedEvaluator INFO: Epoch[1] Complete. Time taken: 00:14:02.081
