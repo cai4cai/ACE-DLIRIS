@@ -1,8 +1,7 @@
 <div align="center">
 
 # ACE-DLIRIS
-# Average Calibration Error
-# A Differentiable Loss for Improved Reliability in Image Segmentation
+# Average Calibration Error: A Differentiable Loss for Improved Reliability in Image Segmentation
 </div>
 
 All trained models and evaluation metrics can be found in `bundle/runs`.
@@ -11,7 +10,7 @@ All trained models and evaluation metrics can be found in `bundle/runs`.
 
 Deep neural networks for medical image segmentation often produce overconfident results misaligned with empirical observations. Such miscalibration challenges their clinical translation. We propose to use marginal L1 average calibration error (mL1-ACE) as a novel auxiliary loss function to improve pixel-wise calibration without compromising segmentation quality. We show that this loss, despite using hard binning, is directly differentiable, bypassing the need for approximate but differentiable surrogate or soft binning approaches. Our work also introduces the concept of *dataset reliability histograms* which generalizes standard reliability diagrams for refined visual assessment of calibration in semantic segmentation aggregated at the dataset level. Using mL1-ACE, we reduce average and maximum calibration error by 45% and 55% respectively, maintaining a Dice score of 87% on the BraTS 2021 dataset.
 
-[PAPER]
+[FULL PAPER](https://arxiv.org/abs/2403.06759)
 
 ## Data Setup
 
